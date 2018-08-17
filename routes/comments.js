@@ -1,5 +1,5 @@
 const commentsRouter = require('express').Router()
-const {updateCommentVote, deleteComment}
+const {updateCommentVote, deleteComment} = require('../controllers/comments.js')
 
 commentsRouter.route('/:comment_id')
     .put(updateCommentVote)

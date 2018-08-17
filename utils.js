@@ -11,7 +11,7 @@ exports.formatArticleData = (articleData, userDocs) => {
     })
 }
 
-exports.formatCommentData =  (commentData, userDocs, articleDocs) => {
+exports.formatCommentData = (commentData, userDocs, articleDocs) => {
     return commentData.map((commentDatum) => {
         const user = userDocs.find((user) => {
             if (user.username === commentDatum.created_by)
