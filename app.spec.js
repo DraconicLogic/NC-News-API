@@ -70,9 +70,13 @@ describe('NC News API /api', () => {
                 )
             })
         })
-        // it('returns one article by its id', () => {
-        //     return request.get('api/articles/')
-        // })
+        it('returns one article by its id', () => {
+            return request.get('api/articles/')
+            .expect(200)
+            .then((res)=> {
+                expect(res.body.article.length).to.equal(1)
+            })
+        })
     })
    
 })
