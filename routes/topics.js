@@ -1,11 +1,11 @@
 const topicsRouter = require('express').Router()
-const { allTopics, articleByTopic, addArticleToTopic } = require('../controllers/topics.js')
+const { allTopics, articlesByTopic, addArticleToTopic } = require('../controllers/topics.js')
 
 topicsRouter.route('/')
     .get(allTopics)
 
 topicsRouter.route('/:topic_slug/articles')
-    .get(articleByTopic)
+    .get(articlesByTopic)
     .post(addArticleToTopic)
 
 
