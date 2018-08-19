@@ -18,9 +18,19 @@ app.use('/*', (req, res, next) => {
 })
 
 app.use((err, req, res, next) => {
+    console.log(err,'NEW ERROR')
     if (err.name === 'CastError' || err.name === 'ValidationError') {
         err.status = 400
-        err.msg = 'Bad Request'
+        if (!err.msg) err.msg = 'Bad Request'     
+    } 
+
+    next(err)
+})
+
+app.use((err, req, res, next) => {
+    if (err.status !== 404 && err.status !== 400) {
+        err.status = 500
+        err.msg = 'Something has gone horribly wrong'
     }
     res.status(err.status).send({msg: err.msg})
 })
