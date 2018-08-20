@@ -9,7 +9,7 @@ const allArticles = (req, res, next) => {
 const articleByID = (req, res, next) => {
     const id = req.params.article_id;
     return Article.findById(id, ()=>{}).then((article) => {
-        if (article === null) throw {status: 404, msg: 'ID not found'}
+        if (article === null) throw {status: 400, msg: 'ID not found'}
         res.status(200).send({article})
     })
     .catch(next)
@@ -37,9 +37,22 @@ const updateArticleVote = (req, res, next) => {
     .catch(next)
 }
 const addComment = (req, res, next) => {
-    console.log(req.params,'ARTICLE ID')
-    console.log(req.body,'<<<<THIS IS THE COMMENT')
-    Comment.create()
+    const articleID = req.params.article_id
+    const comment = req.body
+    return Article.findById(articleID)
+    .then((article)=>{
+        if (!article) throw {status: 400, msg: 'Article not found'}
+        return Comment.create(comment)
+    })
+    .then((comment) => {
+        return comment.populate('created_by').execPopulate()
+        
+    })
+    .then((comment)=>{        
+        res.status(201).send({comment})
+    })
+    .catch(next)
+    
 }
 
 module.exports = {allArticles, articleByID, commentsForArticle, updateArticleVote, addComment}

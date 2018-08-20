@@ -16,8 +16,8 @@ describe('NC News API /api', () => {
    
 
     beforeEach(function() {
-//Without this.timeout, set to 20000, my tests don't resolve in-time.
-//GET a cuppa while you wait.
+    /*Without this.timeout, set to 20000, my tests don't resolve in-time.
+    GET a cuppa while you wait.*/
         this.timeout(20000);
             return seedDB(testData)
             .then((docs) => {
@@ -27,14 +27,19 @@ describe('NC News API /api', () => {
     after(function() {
         return mongoose.disconnect()
     })
-
+    it('ERROR: Returns 404 if no endpoints are hit', ()=>{
+        return request.get(`/api/path-to-nowhere`)
+        .expect(404)
+        .then((res)=>{
+            expect(res.body.msg).to.equal('Page not found')
+        })
+    })
     describe('Topics Router', () => {
         describe('/topics', () => {
             it('GET: returns all the topics', () => {
                 return request.get(`/api/topics`)
                 .expect(200)
                 .then((res) => {
-                    console.log(articleDocs)
                     expect(res.body.topics.length).to.equal(2)
                     expect(res.body.topics[0]).to.have.all.keys(
                         '_id',
@@ -44,14 +49,16 @@ describe('NC News API /api', () => {
                     )
                 })
             })
-            it.skip('GET ERROR: return 404 if there are no data in the database', () => {
-                return request.get(`/api/topics`)
-                .Topic.deleteMany()
-                .expect(404)
-                .then(()=> {
-                    expect(res.body).to.equal('No topics in the database')
-                })
-            })    
+            // it.only('GET ERROR: return 400 if there are no data in the database', () => {
+            //     Topic.deleteMany({title: /.*/})
+            //     .then(()=>{
+            //         return request.get(`/api/topics`)
+            //     })
+            //     .expect(400)
+            //     .then(()=> {
+            //         expect(res.body).to.equal('No topics in the database')
+            //     })
+            // })    
         })
         describe('/topics/:topic_slug/articles', () => {
             it('GET: returns articles belonging to the cat topic', () => {
@@ -62,9 +69,9 @@ describe('NC News API /api', () => {
                     expect(res.body.articles[0].belongs_to).to.equal('cats')
                 })
             })
-            it('ERROR: 404 if topic_slug is incorrect', () => {
+            it('GET ERROR: 400 if topic_slug is incorrect', () => {
                 return request.get(`/api/topics/not-real-topic/articles`)
-                .expect(404)
+                .expect(400)
                 .then((res) => {
                     expect(res.body.msg).to.equal('There are no articles belong to this topic')
                 })
@@ -84,6 +91,22 @@ describe('NC News API /api', () => {
                 .then((res) => {
                     const title = 'Mitch...Our Next PM ?!?'
                     expect(res.body.title).to.equal(title)
+                })
+            })
+            it('POST ERROR: return 400 if a required field is missing',()=>{
+                const newArt = 
+                {                
+                    body: 'The title has been left out so expect this POST request to fail',
+                    votes: 52,
+                    belongs_to: 'mitch',
+                    created_by: userDocs[0]._id
+                }
+                return request.post(`/api/topics/mitch/articles`)
+                .send(newArt)
+                .expect(400)
+                .then((res) => {
+                    
+                    expect(res.body.msg).to.equal('Bad Request')
                 })
             })
         })
@@ -138,9 +161,9 @@ describe('NC News API /api', () => {
                 
                 )
             })
-            it('GET ERROR: return 404 no article matches valid ID', () => {
+            it('GET ERROR: return 400 no article matches valid ID', () => {
                 return request.get(`/api/articles/${wrongID}`)
-                .expect(404)
+                .expect(400)
                 .then((res)=>{
                     expect(res.body.msg).to.equal('ID not found')
                 })
@@ -184,9 +207,10 @@ describe('NC News API /api', () => {
                     belongs_to: articleDocs[1]._id,
                     created_by: userDocs[1]._id
                 }
+
                 return request.post(`/api/articles/${articleDocs[1]._id}/comments`)
                 .send(testComment)
-                .expect(200)
+                .expect(201)
                 .then((res) => {
                     expect(res.body.comment.body).to.equal('TL:DR')
                 })
@@ -194,6 +218,50 @@ describe('NC News API /api', () => {
             })
         })
     })
-    
-   
+    describe('Comment Router', () => {
+        describe('api/comments/:comment_id', () => {
+            it('PUT: increments the comment vote', () => {
+                return request.put(`/api/comments/${commentDocs[0]._id}?vote=up`)
+                .expect(200)
+                .then((res) => {
+                    expect(res.body.comment.votes).to.equal(8)
+                })
+            })
+            it('PUT: decrements the comment vote', () => {
+                return request.put(`/api/comments/${commentDocs[0]._id}?vote=down`)
+                .expect(200)
+                .then((res) => {
+                    expect(res.body.comment.votes).to.equal(6)
+                })
+            })
+            it('DELETE: removes comment from database', () => {
+
+                const commentBody = "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — on you it works."
+
+                return request.delete(`/api/comments/${commentDocs[0]._id}`)
+                .expect(200)
+                .then((res) => {
+                    expect(res.body.comment.body).to.equal(commentBody)
+                })
+            })
+        })
+    })
+    describe('User Router', () => {
+        describe('api/users/:username', () => {
+            it('GET: returns profile data for entered username', () => {
+                return request.get(`/api/users/dedekind561`)
+                .expect(200)
+                .then((res)=>{
+                    expect(res.body.user.name).to.equal('mitch')
+                })
+            })
+            it('GET ERROR: returns 400 for incorrect username',()=>{
+                return request.get(`/api/users/jamesbond007`)
+                .expect(400)
+                .then((res)=>{
+                    expect(res.body.msg).to.equal('username not found')
+                })
+            })
+        })
+    })   
 })

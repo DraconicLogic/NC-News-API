@@ -18,12 +18,10 @@ app.use('/*', (req, res, next) => {
 })
 
 app.use((err, req, res, next) => {
-    console.log(err,'NEW ERROR')
     if (err.name === 'CastError' || err.name === 'ValidationError') {
         err.status = 400
         if (!err.msg) err.msg = 'Bad Request'     
     } 
-
     next(err)
 })
 
