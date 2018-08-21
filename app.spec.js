@@ -34,6 +34,13 @@ describe('NC News API /api', () => {
             expect(res.body.msg).to.equal('Page not found')
         })
     })
+    it.only('returns the documentation page', () => {
+        return request.get(`/api`)
+        .expect(200
+        .then((res) => {
+            console.log(res, 'WHAT DOES THIS LOOK LIKE')
+        }))
+    })
     describe('Topics Router', () => {
         describe('/topics', () => {
             it('GET: returns all the topics', () => {
@@ -200,7 +207,7 @@ describe('NC News API /api', () => {
                     expect(res.body.comments[0].votes).to.equal(7)
                 })
             })
-            it.only('POST: add a new comment to a article', () => {
+            it('POST: add a new comment to a article', () => {
                 const testComment = 
                 {
                     body: 'TL:DR',
