@@ -5,7 +5,7 @@ const fs = require('fs')
 const endpointDocs = (req, res, next) => {
  
  
-    res.status(200).render('../views/docsAPI.html')
+    res.status(200)
 
 
 }
