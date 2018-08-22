@@ -33,13 +33,7 @@ describe('NC News API /api', () => {
         .then((res)=>{
             expect(res.body.msg).to.equal('Page not found')
         })
-    })
-    it.only('returns the documentation page', () => {
-        return request.get(`/api`)
-        .expect(200
-        .then((res) => {
-            console.log(res, 'WHAT DOES THIS LOOK LIKE')
-        }))
+    
     })
     describe('Topics Router', () => {
         describe('/topics', () => {
@@ -56,16 +50,7 @@ describe('NC News API /api', () => {
                     )
                 })
             })
-            // it.only('GET ERROR: return 400 if there are no data in the database', () => {
-            //     Topic.deleteMany({title: /.*/})
-            //     .then(()=>{
-            //         return request.get(`/api/topics`)
-            //     })
-            //     .expect(400)
-            //     .then(()=> {
-            //         expect(res.body).to.equal('No topics in the database')
-            //     })
-            // })    
+        
         })
         describe('/topics/:topic_slug/articles', () => {
             it('GET: returns articles belonging to the cat topic', () => {
@@ -74,13 +59,14 @@ describe('NC News API /api', () => {
                 .then((res) => {
                     expect(res.body.articles.length).to.equal(2)
                     expect(res.body.articles[0].belongs_to).to.equal('cats')
+                    expect(res.body.articles[0]).to.have.property('_id')
                 })
             })
             it('GET ERROR: 400 if topic_slug is incorrect', () => {
                 return request.get(`/api/topics/not-real-topic/articles`)
-                .expect(400)
+                .expect(404)
                 .then((res) => {
-                    expect(res.body.msg).to.equal('There are no articles belong to this topic')
+                    expect(res.body.msg).to.equal('There are no articles belonging to this topic')
                 })
             })
             it('POST: add article to existing topic',()=>{
@@ -98,6 +84,17 @@ describe('NC News API /api', () => {
                 .then((res) => {
                     const title = 'Mitch...Our Next PM ?!?'
                     expect(res.body.title).to.equal(title)
+                    expect(res.body).to.have.all.keys(
+                        '_id',
+                        'votes',
+                        'title',
+                        'created_by',
+                        'body',
+                        'created_at',
+                        'belongs_to',
+                        '__v'
+                    
+                    )
                 })
             })
             it('POST ERROR: return 400 if a required field is missing',()=>{
@@ -114,6 +111,22 @@ describe('NC News API /api', () => {
                 .then((res) => {
                     
                     expect(res.body.msg).to.equal('Bad Request')
+                })
+            })
+            it.only('POST ERROR: return 404 if a topic slug is missing from database',()=>{
+                const newArt = 
+                {        
+                    title: 'How to throw a 404',      
+                    body: 'The title has been left out so expect this POST request to fail',
+                    votes: 52,
+                    belongs_to: 'mitch',
+                    created_by: userDocs[0]._id
+                }
+                return request.post(`/api/topics/not-found/articles`)
+                .send(newArt)
+                .expect(404)
+                .then((res) => {
+                    expect(res.body.msg).to.equal('No such topic exists')
                 })
             })
         })
@@ -170,7 +183,7 @@ describe('NC News API /api', () => {
             })
             it('GET ERROR: return 400 no article matches valid ID', () => {
                 return request.get(`/api/articles/${wrongID}`)
-                .expect(400)
+                .expect(404)
                 .then((res)=>{
                     expect(res.body.msg).to.equal('ID not found')
                 })
@@ -220,6 +233,8 @@ describe('NC News API /api', () => {
                 .expect(201)
                 .then((res) => {
                     expect(res.body.comment.body).to.equal('TL:DR')
+                    expect(res.body.comment).to.have.property('_id')
+                    expect(res.body.comment.created_by).to.be.a('object')
                 })
 
             })
@@ -264,7 +279,7 @@ describe('NC News API /api', () => {
             })
             it('GET ERROR: returns 400 for incorrect username',()=>{
                 return request.get(`/api/users/jamesbond007`)
-                .expect(400)
+                .expect(404)
                 .then((res)=>{
                     expect(res.body.msg).to.equal('username not found')
                 })

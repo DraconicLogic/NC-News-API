@@ -8,18 +8,17 @@ const allArticles = (req, res, next) => {
 }
 const articleByID = (req, res, next) => {
     const id = req.params.article_id;
-    return Article.findById(id, ()=>{}).then((article) => {
-        if (article === null) throw {status: 400, msg: 'ID not found'}
+    return Article.findById(id).then((article) => {
+        if (article === null) throw {status: 404, msg: 'ID not found'}
         res.status(200).send({article})
     })
     .catch(next)
 }
 const commentsForArticle = (req, res, next) => {
     const id = req.params.article_id
-    return Comment.find({belongs_to: id}).then((comments)=> {
-
-        res.status(200).send({comments})
-        
+    return Comment.find({belongs_to: id}).populate('created_by')
+    .then((comments)=> {
+        res.status(200).send({comments}) 
     })
     .catch(next)
 }
@@ -32,6 +31,7 @@ const updateArticleVote = (req, res, next) => {
     const id = req.params.article_id;
 
     Article.findOneAndUpdate({_id: id}, {$inc:{votes: upOrDown}},{new: true}).then((article) => {
+        if (article === null) throw {status: 404, msg: 'no such article in the database'}
         res.status(200).send({article})
     })
     .catch(next)
@@ -41,14 +41,14 @@ const addComment = (req, res, next) => {
     const comment = req.body
     return Article.findById(articleID)
     .then((article)=>{
-        if (!article) throw {status: 400, msg: 'Article not found'}
+        if (!article) throw {status: 404, msg: 'Article not found'}
         return Comment.create(comment)
     })
     .then((comment) => {
         return comment.populate('created_by').execPopulate()
         
     })
-    .then((comment)=>{        
+    .then((comment)=>{     
         res.status(201).send({comment})
     })
     .catch(next)

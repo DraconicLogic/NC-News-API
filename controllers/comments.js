@@ -8,7 +8,7 @@ const updateCommentVote = (req, res, next) => {
     const commentID = req.params.comment_id
     return Comment.findOneAndUpdate({_id: commentID}, {$inc:{votes: upOrDown}},{new: true})
     .then((comment) => {
-        if (!comment) throw {status: 400, msg: 'comment does not exist'}
+        if (!comment) throw {status: 404, msg: 'comment does not exist'}
         res.status(200).send({comment})
     })
     .catch(next)

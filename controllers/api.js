@@ -1,12 +1,14 @@
-const docs = require('../documentation.json')
+const docs = require
+('../documentation.json')
+const fs = require('fs')
 
 const endpointDocs = (req, res, next) => {
  
  
-    res.status(200).send(docs)
+    res.status(200).render('../views/docsAPI.html')
 
 
 }
 
 
-module.exports = endpointDocs
+module.exports = endpointDocs 
