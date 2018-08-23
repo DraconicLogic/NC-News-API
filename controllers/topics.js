@@ -39,7 +39,7 @@ const articlesByTopic = (req, res, next) => {
             }
         })
         
-        //Could not add the comment count
+        //Could not add the comment count amnd not sure why the above code doesn't work. Maybe you can't manipulate information in a promise
         res.status(200).send({articles})
         
     })
