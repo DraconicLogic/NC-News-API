@@ -4,6 +4,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const DB_URL = process.env.NODE_ENV ||require('./config/config.js')
 const apiRouter = require('./routes/api.js')
+const home = require('./homepage.json')
 
 
 
@@ -13,7 +14,7 @@ mongoose.connect(DB_URL, {useNewUrlParser: true}
     console.log(`Connected to ${DB_URL}...`) 
 })
 app.use(bodyParser.json())
-app.route('/', )    
+app.route('/', home )    
 app.use('/api', apiRouter)
 
 app.use('/*', (req, res, next) => {
