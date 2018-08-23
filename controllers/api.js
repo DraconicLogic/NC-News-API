@@ -1,11 +1,10 @@
-const docs = require
-('../documentation.json')
-const fs = require('fs')
+const docs = require('../documentation.json')
+
 
 const endpointDocs = (req, res, next) => {
  
  
-    res.status(200)
+    res.status(200).send(docs)
 
 
 }
