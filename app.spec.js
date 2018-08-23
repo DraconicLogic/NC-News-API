@@ -62,7 +62,7 @@ describe('NC News API /api', () => {
                     expect(res.body.articles[0]).to.have.property('_id')
                 })
             })
-            it('GET ERROR: 400 if topic_slug is incorrect', () => {
+            it('GET ERROR: 404 if topic_slug is incorrect', () => {
                 return request.get(`/api/topics/not-real-topic/articles`)
                 .expect(404)
                 .then((res) => {
@@ -172,16 +172,7 @@ describe('NC News API /api', () => {
                     )
                 })
             })
-            it('GET ERROR: return 400 if article_id is incorect', () => {
-                return request.get(`/api/articles/invalidID`)
-                .expect(400)
-                .then((res)=>{
-                    expect(res.body.msg).to.equal('Bad Request')
-                }
-                
-                )
-            })
-            it('GET ERROR: return 400 no article matches valid ID', () => {
+            it('GET ERROR: return 404 no article matches valid ID', () => {
                 return request.get(`/api/articles/${wrongID}`)
                 .expect(404)
                 .then((res)=>{
@@ -218,6 +209,13 @@ describe('NC News API /api', () => {
                 .then((res) => {
                     expect(res.body.comments.length).to.equal(2)
                     expect(res.body.comments[0].votes).to.equal(7)
+                })
+            })
+            it.only('GET ERROR return 404 if there are no comments for the submitted article', ()=>{
+                return request.get(`/api/articles/${wrongID}/comments`)
+                .expect(404)
+                .then((res)=>{
+                    expect(res.body.msg).to.equal('There are no comments for this article')
                 })
             })
             it('POST: add a new comment to a article', () => {

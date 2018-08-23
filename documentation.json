@@ -1,7 +1,34 @@
 {
     "API Endpoints": 
     [
-        {"GET - /api/topics": "Get all topics" }
+        {"GET - /api": "API Documentation" }
+    ],
+
+    "TOPIC Endpoints": 
+    [
+        {"GET - /api/topics":"Get all topics"},
+        {"GET - /api/topics/:topic_slug/articles": "Get articles belonging to submitted topic"},
+        {"POST - /api/topics/:topic_slug/articles": "Add a new article that belongs to submitted topic" }
+    ],
+
+    "ARTICLE Endpoints" : 
+    [
+        {"GET - /api/article": "Get all articles"}, 
+        {"GET - /api/article/:article_id": "Get article by submitted ID"},
+        {"PUT - /api/article/:article_id": "Upvote or Downvote an article"},
+        {"GET - /api/article/:article_id/comments": "Get all comments for an article"},
+        {"POST - /api/article/:article_id/comments": "Add new comment to an article"}
+    ],
+
+    "COMMENT Endpoints" : 
+    [
+        {"PUT - /api/comments/:comment_id": "Upvote or Downvote comment"},
+        {"DELETE - /api/comments/:comment_id": "Delete comment"}
+    ],
+
+    "USER Endpoints": 
+    [
+        {"GET - /api/users/:username": "Get submitted username"}
     ]
 
 
