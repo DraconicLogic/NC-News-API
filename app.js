@@ -14,9 +14,9 @@ mongoose.connect(DB_URL, {useNewUrlParser: true}
     console.log(`Connected to ${DB_URL}...`) 
 })
 app.use(bodyParser.json())
-app.use('/', (req, res, next) => {
-    res.status(200).send(home)
-})    
+// app.use('/', (req, res, next) => {
+//     res.status(200).send(home)
+// })    
 app.use('/api', apiRouter)
 
 app.use('/*', (req, res, next) => {
