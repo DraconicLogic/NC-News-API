@@ -113,7 +113,7 @@ describe('NC News API /api', () => {
                     expect(res.body.msg).to.equal('Bad Request')
                 })
             })
-            it.only('POST ERROR: return 404 if a topic slug is missing from database',()=>{
+            it('POST ERROR: return 404 if a topic slug is missing from database',()=>{
                 const newArt = 
                 {        
                     title: 'How to throw a 404',      
@@ -211,7 +211,7 @@ describe('NC News API /api', () => {
                     expect(res.body.comments[0].votes).to.equal(7)
                 })
             })
-            it.only('GET ERROR return 404 if there are no comments for the submitted article', ()=>{
+            it('GET ERROR return 404 if there are no comments for the submitted article', ()=>{
                 return request.get(`/api/articles/${wrongID}/comments`)
                 .expect(404)
                 .then((res)=>{

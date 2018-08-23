@@ -5,8 +5,6 @@ const bodyParser = require('body-parser')
 const { DB_URL } = process.env.DB_URL ? process.env : require('./config/config.js')
 const apiRouter = require('./routes/api.js')
 const home = require('./homepage.json')
-console.log(process.env,'<<<<<<< pre')
-console.log(DB_URL,'<<<<< DB_URL')
 
 
 mongoose.connect(DB_URL, {useNewUrlParser: true}
