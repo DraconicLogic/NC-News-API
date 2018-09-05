@@ -11,8 +11,10 @@ const allTopics = (req, res, next) => {
 }
 
 const articlesByTopic = (req, res, next) => {
+
     const slug = req.params.topic_slug
-    return Article.find({belongs_to: slug}).then((articles)=> {
+    return Article.find({belongs_to: slug})
+    .then((articles)=> {
         if (articles.length === 0) throw {status: 404, msg: 'There are no articles belonging to this topic'}
         const articleIDs = []
         
@@ -30,14 +32,15 @@ const articlesByTopic = (req, res, next) => {
             else {obj[comment.belongs_to] += 1}
             return obj
         },{})
-
+        console.log(commentCount,'<<<< COMMENT COUNT OBJECT')
         
-        articles.forEach((article)=>{
+        const artWthCom = articles.map((article)=>{
+            article
             if (!!commentCount[article._id]) {
                 article.comments = commentCount[article._id]  
             }
         })
-        console.log(articles,'<<<<< ARTICLEXS')
+        console.log(articles,'<<<<< ARTICLES')
         //Could not add the comment count and not sure why the above code doesn't work. Maybe can't manipulate information in a promise
         res.status(200).send({articles})
         

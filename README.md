@@ -36,7 +36,7 @@ To test the API with a external developer tool e.g postman type `npm run dev`. T
 
 ### App
 
-The app for this API is hosted on Heroku. You can try it [here](https://draconiclogic-nc-news.herokuapp.com/) 
+The app for this API is hosted on Heroku. You can try it at [https://draconiclogic-nc-news.herokuapp.com/](https://draconiclogic-nc-news.herokuapp.com/) 
 
 
 ### Author
