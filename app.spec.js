@@ -53,7 +53,7 @@ describe('NC News API /api', () => {
         
         })
         describe('/topics/:topic_slug/articles', () => {
-            it.only('GET: returns articles belonging to the cat topic', () => {
+            it('GET: returns articles belonging to the cat topic', () => {
                 return request.get(`/api/topics/cats/articles`)
                 .expect(200)
                 .then((res) => {
@@ -152,7 +152,7 @@ describe('NC News API /api', () => {
                 })
             })
         })
-        describe('/articles/:article_id', () => {
+        describe.only('/articles/:article_id', () => {
             it('GET: returns one article by its id', () => {
                 return request.get(`/api/articles/${articleDocs[0]._id}`)
                 .expect(200)

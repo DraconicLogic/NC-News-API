@@ -13,11 +13,11 @@
 
     "ARTICLE Endpoints" : 
     [
-        {"GET - /api/article": "Get all articles"}, 
-        {"GET - /api/article/:article_id": "Get article by submitted ID"},
-        {"PUT - /api/article/:article_id": "Upvote or Downvote an article"},
-        {"GET - /api/article/:article_id/comments": "Get all comments for an article"},
-        {"POST - /api/article/:article_id/comments": "Add new comment to an article"}
+        {"GET - /api/articles": "Get all articles"}, 
+        {"GET - /api/articles/:article_id": "Get article by submitted ID"},
+        {"PUT - /api/articles/:article_id": "Upvote or Downvote an article"},
+        {"GET - /api/articles/:article_id/comments": "Get all comments for an article"},
+        {"POST - /api/articles/:article_id/comments": "Add new comment to an article"}
     ],
 
     "COMMENT Endpoints" : 
