@@ -53,7 +53,7 @@ describe('NC News API /api', () => {
         
         })
         describe('/topics/:topic_slug/articles', () => {
-            it('GET: returns articles belonging to the cat topic', () => {
+            it.only('GET: returns articles belonging to the cat topic', () => {
                 return request.get(`/api/topics/cats/articles`)
                 .expect(200)
                 .then((res) => {
