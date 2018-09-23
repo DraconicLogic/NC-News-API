@@ -1,5 +1,5 @@
 const docs = require('../documentation.json')
-const home = require('./homepage.json')
+const home = require('../homepage.json')
 
 
 const endpointDocs = (req, res, next) => {
