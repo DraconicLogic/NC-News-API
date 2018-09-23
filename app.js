@@ -4,7 +4,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const { DB_URL } = process.env.DB_URL ? process.env : require('./config/config.js')
 const apiRouter = require('./routes/api.js')
-const {getHomePage} = require('./controllers/api.js')
+const { getHomePage } = require('./controllers/api.js')
 
 const cors = require('cors')
 

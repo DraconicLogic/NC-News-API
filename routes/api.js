@@ -4,7 +4,7 @@ const articlesRouter = require('./articles.js')
 const commentsRouter = require('./comments.js')
 const usersRouter = require('./users.js')
 
-const endpointDocs = require('../controllers/api.js')
+const {endpointDocs} = require('../controllers/api.js')
 
 
 apiRouter.route('/')
