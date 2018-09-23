@@ -19,6 +19,8 @@ app.use(bodyParser.json())
 //     res.status(200).send(home)
 // })    
 app.use('/api', apiRouter)
+app.route('/')
+    .get(home)
 
 app.use('/*', (req, res, next) => {
     next({status: 404, msg: 'Page not found'})
