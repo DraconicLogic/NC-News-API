@@ -4,7 +4,8 @@ const app = express()
 const bodyParser = require('body-parser')
 const { DB_URL } = process.env.DB_URL ? process.env : require('./config/config.js')
 const apiRouter = require('./routes/api.js')
-const home = require('./homepage.json')
+const {getHomePage} = require('../controllers/api.js')
+
 const cors = require('cors')
 
 
@@ -20,7 +21,7 @@ app.use(bodyParser.json())
 // })    
 app.use('/api', apiRouter)
 app.route('/')
-    .get(home)
+    .get(getHomePage)
 
 app.use('/*', (req, res, next) => {
     next({status: 404, msg: 'Page not found'})
