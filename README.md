@@ -41,7 +41,7 @@ The app for this API is hosted on Heroku. You can try it at [https://draconiclog
 
 ### Author
 
-Kingsley Onyensoh is currently a trainee software developer training at the esteemed codeing bootcamp Northcoders based in Manchester, UK
+Kingsley Onyensoh is currently a trainee software developer training at the esteemed coding bootcamp Northcoders based in Manchester, UK
 
 You can email him at:
 
