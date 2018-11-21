@@ -18,7 +18,6 @@ const commentsForArticle = (req, res, next) => {
     const id = req.params.article_id
     return Comment.find({belongs_to: id}).populate('created_by')
     .then((comments)=> {
-        if (!comments.length) throw {status: 404, msg: 'There are no comments for this article'}
         res.status(200).send({comments}) 
     })
     .catch(next)

@@ -202,20 +202,13 @@ describe('NC News API /api', () => {
             })
 
         })
-        describe('/api/articles/:article_id/comments', () => {
+        describe.only('/api/articles/:article_id/comments', () => {
             it('GET: return all comments for individual article', () => {
                 return request.get(`/api/articles/${articleDocs[0]._id}/comments`)
                 .expect(200)
                 .then((res) => {
                     expect(res.body.comments.length).to.equal(2)
                     expect(res.body.comments[0].votes).to.equal(7)
-                })
-            })
-            it('GET ERROR return 404 if there are no comments for the submitted article', ()=>{
-                return request.get(`/api/articles/${wrongID}/comments`)
-                .expect(404)
-                .then((res)=>{
-                    expect(res.body.msg).to.equal('There are no comments for this article')
                 })
             })
             it('POST: add a new comment to a article', () => {
